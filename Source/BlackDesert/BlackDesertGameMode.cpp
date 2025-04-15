@@ -6,8 +6,9 @@
 
 ABlackDesertGameMode::ABlackDesertGameMode()
 {
+	// /Script/Engine.Blueprint'/Game/Blueprint/Character/BP_BDCharacter.BP_BDCharacter'
 	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter"));
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/Blueprint/Character/BP_BDArcher"));
 	if (PlayerPawnBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;

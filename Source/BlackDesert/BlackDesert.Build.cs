@@ -10,7 +10,8 @@ public class BlackDesert : ModuleRules
 
 		PublicIncludePaths.AddRange(new string[] { "BlackDesert" });
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", 
+			"GameplayAbilities", "GameplayTags", "GameplayTasks",
 			"OnlineSubsystem",
             "OnlineSubsystemEOS",
             "OnlineSubsystemUtils",

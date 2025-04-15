@@ -10,6 +10,10 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "GameplayAbilitySpec.h"
+#include "GA/BDGA_BasicAttack.h" 
+#include "GA/BDGA_ArcherAttack.h"
+
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -52,6 +56,15 @@ ABlackDesertCharacter::ABlackDesertCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+
+	// Ability 
+	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+}
+
+UAbilitySystemComponent* ABlackDesertCharacter::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
 }
 
 void ABlackDesertCharacter::BeginPlay()
@@ -67,6 +80,23 @@ void ABlackDesertCharacter::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
+
+	// Ability
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+		InitializeAbilities();
+		UE_LOG(LogTemp, Log, TEXT("BD_LOG ASC "));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("BD_LOG NO ASC "));
+	}
+}
+
+void ABlackDesertCharacter::InitializeAbilities()
+{
+	UE_LOG(LogTemp, Warning, TEXT("BD_LOG BlackDesertCharacter InitializeAbilities"));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -86,6 +116,9 @@ void ABlackDesertCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABlackDesertCharacter::Look);
+
+		// 
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &ABlackDesertCharacter::Attack);
 	}
 	else
 	{
@@ -126,5 +159,17 @@ void ABlackDesertCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+void ABlackDesertCharacter::Attack()
+{
+	if (AbilitySystemComponent)
+	{
+		UE_LOG(LogTemp, Log, TEXT("BD_LOG BlackDesertCharacter Attack()"));
+
+
+		const FGameplayTag AttackTag = FGameplayTag::RequestGameplayTag(FName("Input.Action.Attack"));
+		AbilitySystemComponent->TryActivateAbilitiesByTag(FGameplayTagContainer(AttackTag));
 	}
 }
