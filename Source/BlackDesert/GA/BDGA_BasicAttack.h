@@ -27,5 +27,8 @@ public:
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attack")
     UAnimMontage* AttackMontage;
+
+
+
 	
 };

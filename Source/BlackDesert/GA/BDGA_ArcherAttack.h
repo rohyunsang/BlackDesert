@@ -6,6 +6,10 @@
 #include "GA/BDGA_BasicAttack.h"
 #include "BDGA_ArcherAttack.generated.h"
 
+// 나이아가라 사용을 위한 선언
+class UNiagaraSystem;
+
+
 /**
  * 
  */
@@ -25,9 +29,14 @@ public:
         const FGameplayEventData* TriggerEventData
     ) override;
 
+
 protected:
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Archer")
-    UStaticMesh* ArrowMesh;
-	
+    UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+    TSubclassOf<AActor> ArcherProjectileClass;
+
+
+protected:
+    UPROPERTY(EditDefaultsOnly, Category = "Effect")
+    UNiagaraSystem* ShootEffectVFX;
 
 };
